@@ -1,10 +1,29 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+// src/main.tsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
+import App from './App'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+const queryClient = new QueryClient()
+// Явно ставим светлую тему
+const theme = createTheme({
+    palette: {
+        mode: 'light'
+    }
+})
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+        <BrowserRouter>
+            <QueryClientProvider client={queryClient}>
+                <ThemeProvider theme={theme}>
+                    {/* Сброс системных стилей MUI */}
+                    <CssBaseline />
+                    <App />
+                </ThemeProvider>
+            </QueryClientProvider>
+        </BrowserRouter>
+    </React.StrictMode>
 )
