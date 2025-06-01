@@ -9,6 +9,8 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import { Box, CssBaseline } from '@mui/material'
 import './App.css'
+import AssignmentList from "./pages/AssignmentList.tsx";
+import CourseDetail from "./pages/CourseDetail.tsx";
 
 export default function App() {
     return (
@@ -38,7 +40,22 @@ export default function App() {
                             </ProtectedRoute>
                         }
                     />
-
+                    <Route
+                        path="/courses/:id"
+                        element={
+                            <ProtectedRoute>
+                                <CourseDetail />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/courses/:id/assigments"
+                        element={
+                        <ProtectedRoute>
+                            <AssignmentList />
+                        </ProtectedRoute>
+                        }
+                    />
                     <Route path="*" element={<Navigate to="/signup" replace />} />
                 </Routes>
             </Box>

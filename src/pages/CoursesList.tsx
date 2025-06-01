@@ -1,15 +1,18 @@
 // src/pages/CoursesList.tsx
 import React from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import {
     Container,
     Typography,
     Grid,
     Card,
+    CardActionArea,
     CardContent,
     CircularProgress,
     Box
 } from '@mui/material'
 import { useCourses } from '../hooks/useCourses'
+import type { Course } from '../types/course'  // убедитесь, что тип Course определён
 
 export default function CoursesList() {
     const { data: courses = [], isLoading, isError, error } = useCourses()
@@ -21,10 +24,11 @@ export default function CoursesList() {
             </Box>
         )
     }
+
     if (isError) {
         return (
             <Container>
-                <Typography color="error">Error: {error?.message}</Typography>
+                <Typography color="error">Ошибка: {error?.message}</Typography>
             </Container>
         )
     }
@@ -47,7 +51,7 @@ export default function CoursesList() {
                 <Typography align="center">No courses available.</Typography>
             ) : (
                 <Grid container spacing={3}>
-                    {courses.map(course => (
+                    {courses.map((course: Course) => (
                         <Grid item xs={12} sm={6} md={4} key={course.id}>
                             <Card
                                 variant="outlined"
@@ -60,12 +64,19 @@ export default function CoursesList() {
                                     }
                                 }}
                             >
-                                <CardContent>
-                                    <Typography variant="h6">{course.title}</Typography>
-                                    <Typography color="text.secondary" sx={{ mt: 1 }}>
-                                        {course.description}
-                                    </Typography>
-                                </CardContent>
+                                {/* Делаем всю карточку кликабельной */}
+                                <CardActionArea
+                                    component={RouterLink}
+                                    to={`/courses/${course.id}`}
+                                    sx={{ height: '100%' }}
+                                >
+                                    <CardContent>
+                                        <Typography variant="h6">{course.title}</Typography>
+                                        <Typography color="text.secondary" sx={{ mt: 1 }}>
+                                            {course.description}
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
                             </Card>
                         </Grid>
                     ))}
